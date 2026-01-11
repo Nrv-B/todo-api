@@ -45,7 +45,11 @@
 
 ```json
 {
-  "title": "Learn Laravel",
-  "description": "Build To-Do API project",
-  "status": false
+  "message": "Task created successfully",
+  "data": {
+    "id": 1,
+    "title": "Learn Laravel",
+    "description": "Build To-Do API project",
+    "status": false
+  }
 }

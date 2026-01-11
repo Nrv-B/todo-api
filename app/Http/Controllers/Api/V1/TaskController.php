@@ -7,9 +7,14 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\V1\TaskResource;
+use App\Services\TaskService;
 
 class Taskcontroller extends Controller
 {
+    public function __construct(
+        private TaskService $taskService
+    ) {}
+    
     /**
      * Display a listing of the resource.
      */
@@ -24,8 +29,8 @@ class Taskcontroller extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $task = Task::create($request->validated());
-
+        $task = $this->taskService->create($request->validated());
+        
         return response()->json([
             'message' => 'Task created successfully',
             'data' => new TaskResource($task)
@@ -45,7 +50,7 @@ class Taskcontroller extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $task->update($request->validated());
+        $task= $this->taskService->update($task,$request->validated());
 
         return response()->json([
             'message' => 'Task updated successfully',
@@ -58,7 +63,7 @@ class Taskcontroller extends Controller
      */
     public function destroy(Task $task)
     {
-        $task->delete();
+        $this->taskService->delete($task);
 
         return response()->json([
             'message' => 'Task deleted '
